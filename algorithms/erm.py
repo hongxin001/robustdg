@@ -46,24 +46,24 @@ class Erm(BaseAlgo):
         #         print('Batch Idx: ', batch_idx)
 
                 self.opt.zero_grad()
-                loss_e= torch.tensor(0.0).to(self.cuda)
+                # loss_e= torch.tensor(0.0).to(self.cuda)
                 
                 x_e= x_e.to(self.cuda)
-                y_e= torch.argmax(y_e, dim=1).to(self.cuda)
-                d_e= torch.argmax(d_e, dim=1).numpy()
+                y_e= y_e.to(self.cuda).argmax(dim=1)
+                # d_e= torch.argmax(d_e, dim=1).numpy()
                 
                 #Forward Pass
                 out= self.phi(x_e)
                 erm_loss= F.cross_entropy(out, y_e.long()).to(self.cuda)
-                loss_e+= erm_loss
-                penalty_erm += float(loss_e)
+                # loss_e+= erm_loss
+                penalty_erm += float(erm_loss.cpu().data)
 
                 #Backprorp
-                loss_e.backward(retain_graph=False)
+                erm_loss.backward(retain_graph=False)
                 self.opt.step()
                 
                 del erm_loss
-                del loss_e
+                # del loss_e
                 torch.cuda.empty_cache()
         
                 train_acc+= torch.sum(torch.argmax(out, dim=1) == y_e ).item()
