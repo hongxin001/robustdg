@@ -28,19 +28,19 @@ class Erm(BaseAlgo):
         self.max_val_acc=0.0        
         for epoch in range(self.args.epochs):   
             
-            if epoch ==0 or (epoch % self.args.match_interrupt == 0 and self.args.match_flag):
-                data_match_tensor, label_match_tensor= self.get_match_function(epoch)
-            
+            # if epoch ==0 or (epoch % self.args.match_interrupt == 0 and self.args.match_flag):
+            #     data_match_tensor, label_match_tensor= self.get_match_function(epoch)
+            #
             penalty_erm=0
             penalty_ws=0
             train_acc= 0.0
             train_size=0
     
-            perm = torch.randperm(data_match_tensor.size(0))            
-            data_match_tensor_split= torch.split(data_match_tensor[perm], self.args.batch_size, dim=0)
-            label_match_tensor_split= torch.split(label_match_tensor[perm], self.args.batch_size, dim=0)
-            print('Split Matched Data: ', len(data_match_tensor_split), data_match_tensor_split[0].shape, len(label_match_tensor_split))
-    
+            # perm = torch.randperm(data_match_tensor.size(0))
+            # data_match_tensor_split= torch.split(data_match_tensor[perm], self.args.batch_size, dim=0)
+            # label_match_tensor_split= torch.split(label_match_tensor[perm], self.args.batch_size, dim=0)
+            # print('Split Matched Data: ', len(data_match_tensor_split), data_match_tensor_split[0].shape, len(label_match_tensor_split))
+            #
             #Batch iteration over single epoch
             for batch_idx, (x_e, y_e ,d_e, idx_e) in enumerate(self.train_dataset):
         #         print('Batch Idx: ', batch_idx)
